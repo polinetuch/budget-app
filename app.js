@@ -1,21 +1,36 @@
+// Budget Controller
 var budgetController = (function() {
-    var x = 99;
 
-    var add = function(a) {
-        return x + a;
-    }
+})();
 
-    return {
-        publicTest: function(b) {
-            console.log(add(b));
+// UI Controller
+var UIController = (function(description, value) {
+        return {
+            getInput: function() {
+                // type will be - or +
+                var type = document.querySelector('.add__type').value;
+                var value = document.querySelector('.add__value').value;
+                var description = document.querySelector('.add__description');
+            }
         }
+})();
+
+// Global App Controller
+var appController = (function(budgetCtrl, UICtrl) {
+
+    var controlAddItem = function() {
+        // get the field input data - add__type
+        // add item to the budget controller
+        // add new item to user interface
+        // calculate the budget 
+        // display the budget on UI
     }
-})();
 
-var UIController = (function() {
+    document.querySelector('.add__btn').addEventListener('click', controlAddItem);
 
-})();
-
-var dataModule = (function() {
-
-})();
+    document.addEventListener('keypress', function(event) {
+        if (event.keyCode === 13 || event === 13) {
+            controlAddItem();
+        }
+    });
+})(budgetController, UIController);
