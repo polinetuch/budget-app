@@ -12,15 +12,25 @@ var budgetController = (function() {
         this.value = value;
     };
 
+    var calculateTotal = function(type) {
+        var sum = 0;
+        data.allItems[type].forEach(function(current) {
+            sum += current.value;
+        });
+        data.totals[type] = sum;
+    };
+
     var data = {
         allItems: {
             exp: [],
             inc: []
         },
-        total: {
+        totals: {
             exp: 0,
             inc: 0
-        }
+        },
+        budget: 0,
+        percentage: -1
     };
 
     return {
@@ -48,6 +58,31 @@ var budgetController = (function() {
             return newItem;
         },
 
+        calculateBudget: function() {
+            // Calculate total income and expenses
+            calculateTotal('inc');
+            calculateTotal('exp');
+
+            // Calculate the budget: income - expense
+            data.budget = data.totals.inc - data.totals.exp;
+
+            // Calculate the percentage of income
+            if (data.totals.inc > 0) {
+                data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+            } else {
+                data.percentage = -1;
+            }
+        },
+
+        getBudget: function() {
+            return {
+                budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                percentage: data.percentage
+            }
+        },
+
         testing: function() {
             console.log(data)
         }
@@ -68,8 +103,8 @@ var UIController = (function() {
             getInput: function() {
                 return {
                     type: document.querySelector(DOMString.inputType).value,
-                    value: document.querySelector(DOMString.inputValue).value,
                     description: document.querySelector(DOMString.inputDescription).value,
+                    value: parseFloat(document.querySelector(DOMString.inputValue).value),
                 }
             },
 
@@ -138,26 +173,37 @@ var appController = (function(budgetCtrl, UICtrl) {
                 controlAddItem();
             }
         });
+    };
+
+    var updateBudget = function() {
+        // Calculate the budget
+        budgetController.calculateBudget();
+
+        // Return the budget
+        var budget = budgetController.getBudget();
+        console.log(budget)
+        // Display the budget on the UI
     }
 
     var controlAddItem = function() {
         var input, newItem;
 
-        // get input data
+        // Get input data
         input = UICtrl.getInput();
 
-        // get the field input data - add__type
-        newItem = budgetController.addItem(input.type, input.description, input.value);
-
-        // add item to the budget controller
-        UIController.addListItem(newItem, input.type);
-
-        // clear input value fields
-        UIController.clearInputFields();
-
-        // add new item to user interface
-        // calculate the budget 
-        // display the budget on UI
+        if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
+            // get the field input data - add__type
+            newItem = budgetController.addItem(input.type, input.description, input.value);
+    
+            // Add item to the budget controller
+            UIController.addListItem(newItem, input.type);
+    
+            // Clear input value fields
+            UIController.clearInputFields();
+    
+            // Calculate and Update budget
+            updateBudget();
+        }
     };
 
     return {
