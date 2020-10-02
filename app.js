@@ -109,6 +109,19 @@ var UIController = (function() {
                 // Insert HTML into the DOM
                 document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
             },
+
+            // empty input fields
+            clearInputFields: function() {
+                var fields, fieldsArr;
+
+                fields = document.querySelectorAll(DOMString.inputDescription + ', ' + DOMString.inputValue)
+                fieldsArr = Array.prototype.slice.call(fields);
+                fieldsArr.forEach(function(current, index, array) {
+                    current.value = "";
+                });
+
+                fieldsArr[0].focus();
+            },
                getDOMString: function() {
                 return DOMString;
             }
@@ -129,6 +142,8 @@ var appController = (function(budgetCtrl, UICtrl) {
 
     var controlAddItem = function() {
         var input, newItem;
+
+        // get input data
         input = UICtrl.getInput();
 
         // get the field input data - add__type
@@ -136,6 +151,9 @@ var appController = (function(budgetCtrl, UICtrl) {
 
         // add item to the budget controller
         UIController.addListItem(newItem, input.type);
+
+        // clear input value fields
+        UIController.clearInputFields();
 
         // add new item to user interface
         // calculate the budget 
