@@ -51,7 +51,6 @@ var budgetController = (function() {
         testing: function() {
             console.log(data)
         }
-
     }
 })();
 
@@ -63,7 +62,7 @@ var UIController = (function() {
         inputDescription: '.add__description',
         inputButton: '.add__btn',
         incomeContainer: '.income__list',
-        expenseContainer: '.expense__list'
+        expenseContainer: '.expenses__list'
     };
         return {
             getInput: function() {
@@ -75,7 +74,7 @@ var UIController = (function() {
             },
 
             addListItem: function(obj, type) {
-                var html, newHtml;
+                var html, newHtml, element;
                 // Create HTML string with placeholder text
                 if (type === 'inc'){
                     element = DOMString.incomeContainer;
@@ -101,6 +100,7 @@ var UIController = (function() {
                                 </div>
                             </div>`;
                 };
+
                 // Replace the placeholder text with some actual data
                 newHtml = html.replace('%id%', obj.id);
                 newHtml = newHtml.replace('%description%', obj.description);
@@ -108,10 +108,8 @@ var UIController = (function() {
 
                 // Insert HTML into the DOM
                 document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
-
             },
-
-            getDOMString: function() {
+               getDOMString: function() {
                 return DOMString;
             }
         }
