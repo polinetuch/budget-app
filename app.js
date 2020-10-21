@@ -58,6 +58,10 @@ var budgetController = (function() {
             return newItem;
         },
 
+        deleteItem: function(type, id) {
+            
+        },
+
         calculateBudget: function() {
             // Calculate total income and expenses
             calculateTotal('inc');
@@ -101,7 +105,8 @@ var UIController = (function() {
         budgetLabel: '.budget__value',
         incomeLabel: '.budget__income--value',
         expenseLabel: '.budget__expenses--value',
-        percentageLabel: '.budget__expenses--percentage'
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
     };
         return {
             getInput: function() {
@@ -117,7 +122,7 @@ var UIController = (function() {
                 // Create HTML string with placeholder text
                 if (type === 'inc'){
                     element = DOMString.incomeContainer;
-                    html = `<div class="item clearfix" id="income-%id%">
+                    html = `<div class="item clearfix" id="inc-%id%">
                                 <div class="item__description">%description%</div>
                                     <div class="right clearfix">
                                         <div class="item__value">%value%</div>
@@ -128,7 +133,7 @@ var UIController = (function() {
                             </div>`;
                 } else if (type === 'exp') {
                     element = DOMString.expenseContainer;
-                    html = `<div class="item clearfix" id="expense-%id%">
+                    html = `<div class="item clearfix" id="exp-%id%">
                                 <div class="item__description">%description%</div>
                                 <div class="right clearfix">
                                     <div class="item__value">%value%</div>
@@ -191,6 +196,7 @@ var appController = (function(budgetCtrl, UICtrl) {
                 controlAddItem();
             }
         });
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
     };
 
     var updateBudget = function() {
@@ -222,6 +228,23 @@ var appController = (function(budgetCtrl, UICtrl) {
     
             // Calculate and Update budget
             updateBudget();
+        }
+    };
+
+    var ctrlDeleteItem = function(event) {
+        var itemID, splitID, type, ID; 
+        
+        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id    
+        if (itemID) {
+            splitID = itemID.split('-')
+            type = splitID[0];
+            ID = splitID[1];
+
+            // 1. delete the item from the data structure
+
+            // 2. delete the item from the user interface
+
+            // 3. update and show the new budget
         }
     };
 
