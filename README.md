@@ -1,6 +1,6 @@
 # Budget App (Currently in progress)
 
-View app here: 
+View app here: https://polinetuch.github.io/budget-app/
 
 This is a frontend web application, which allows user manage and store their income and expenses. Users can:
    1. Select options: expense ' - '  or income ' + ' 
