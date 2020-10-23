@@ -227,9 +227,11 @@ var UIController = (function() {
             },
 
             displayBudget: function(obj) {
-                document.querySelector(DOMString.budgetLabel).textContent = obj.budget;
-                document.querySelector(DOMString.incomeLabel).textContent = obj.totalInc;
-                document.querySelector(DOMString.expenseLabel).textContent = obj.totalExp;
+                var type; 
+                obj.budget > 0 ? type = 'inc' : type = 'exp';
+                document.querySelector(DOMString.budgetLabel).textContent = formatNumber(obj.budget, type);
+                document.querySelector(DOMString.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
+                document.querySelector(DOMString.expenseLabel).textContent = formatNumber(obj.totalExp, 'exp');
                 
                 if (obj.percentage > 0) {
                     document.querySelector(DOMString.percentageLabel).textContent = obj.percentage + '%';
